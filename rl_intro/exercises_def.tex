@@ -1,0 +1,354 @@
+%
+% Definitions and macros
+%
+
+%\setlength{\marginparwidth}{1.2in}
+%\let\oldmarginpar\marginpar
+%\renewcommand\marginpar[1]{\-\oldmarginpar[\raggedleft\footnotesize #1]%
+%{\raggedright\footnotesize #1}}
+
+%\renewcommand{\indexspace}{\rule{0cm}{.4cm}}
+%% end example/remark
+%\newcommand{\eex}{\ifmmode\sq\else{\unskip\nobreak\hfil
+%  \penalty50\hskip1em\null\nobreak\hfil$\Diamond$
+%  \parfillskip=0pt\finalhyphendemerits=0\endgraf}\fi{}}
+%\newcommand{\erem}{\ifmmode\sq\else{\unskip\nobreak\hfil
+%  \penalty50\hskip1em\null\nobreak\hfil$\star$
+%  \parfillskip=0pt\finalhyphendemerits=0\endgraf}\fi{}}
+%\newcommand{\eobs}{\ifmmode\sq\else{\unskip\nobreak\hfil
+%  \penalty50\hskip1em\null\nobreak\hfil$\vartriangleleft$
+%  \parfillskip=0pt\finalhyphendemerits=0\endgraf}\fi{}}
+
+% VET - characters - lowercase
+\newcommand{\avet}{{\mathbf  a}}
+\newcommand{\bvet}{{\mathbf  b}}
+\newcommand{\cvet}{{\mathbf  c}}
+\newcommand{\dvet}{{\mathbf  d}}
+\newcommand{\evet}{{\mathbf  e}}
+\newcommand{\fvet}{{\mathbf  f}}
+\newcommand{\gvet}{{\mathbf  g}}
+\newcommand{\hvet}{{\mathbf  h}}
+\newcommand{\ivet}{{\mathbf  i}}
+\newcommand{\jvet}{{\mathbf  j}}
+\newcommand{\kvet}{{\mathbf  k}}
+\newcommand{\lvet}{{\mathbf  l}}
+\newcommand{\mvet}{{\mathbf  m}}
+\newcommand{\nvet}{{\mathbf  n}}
+\newcommand{\ovet}{{\mathbf  o}}
+\newcommand{\pvet}{{\mathbf  p}}
+\newcommand{\qvet}{{\mathbf  q}}
+\newcommand{\rvet}{{\mathbf  r}}
+\newcommand{\svet}{{\mathbf  s}}
+\newcommand{\tvet}{{\mathbf  t}}
+\newcommand{\uvet}{{\mathbf  u}}
+\newcommand{\vvet}{{\mathbf  v}}
+\newcommand{\xvet}{{\mathbf  x}}
+\newcommand{\yvet}{{\mathbf  y}}
+\newcommand{\zvet}{{\mathbf  z}}
+\newcommand{\wvet}{{\mathbf  w}}
+
+% VET - characters - uppercase
+\newcommand{\Avet}{{\mathbf  A}}
+\newcommand{\Bvet}{{\mathbf  B}}
+\newcommand{\Cvet}{{\mathbf  C}}
+\newcommand{\Dvet}{{\mathbf  D}}
+\newcommand{\Evet}{{\mathbf  E}}
+\newcommand{\Fvet}{{\mathbf  F}}
+\newcommand{\Gvet}{{\mathbf  G}}
+\newcommand{\Hvet}{{\mathbf  H}}
+\newcommand{\Ivet}{{\mathbf  I}}
+\newcommand{\Jvet}{{\mathbf  J}}
+\newcommand{\Kvet}{{\mathbf  K}}
+\newcommand{\Lvet}{{\mathbf  L}}
+\newcommand{\Mvet}{{\mathbf  M}}
+\newcommand{\Nvet}{{\mathbf  N}}
+\newcommand{\Ovet}{{\mathbf  O}}
+\newcommand{\Pvet}{{\mathbf  P}}
+\newcommand{\Qvet}{{\mathbf  Q}}
+\newcommand{\Rvet}{{\mathbf  R}}
+\newcommand{\Svet}{{\mathbf  S}}
+\newcommand{\Tvet}{{\mathbf  T}}
+\newcommand{\Uvet}{{\mathbf  U}}
+\newcommand{\Xvet}{{\mathbf  X}}
+\newcommand{\Yvet}{{\mathbf  Y}}
+\newcommand{\Vvet}{{\mathbf  V}}
+\newcommand{\Wvet}{{\mathbf  W}}
+\newcommand{\Zvet}{{\mathbf  Z}}
+
+\newcommand{\Deltavet}{\mathbf  \Delta}
+\newcommand{\Lambdavet}{{\mathbf  \Lambda}}
+\newcommand{\Sigmavet}{\mathbf  \Sigma}
+\newcommand{\Thetavet}{{\mathbf  \Theta}}
+
+% Special characters:
+\newcommand{\s}{ {\sigma} }
+
+\newcommand{\e}{{\mathrm e}}
+\newcommand{\jm}{{\mathrm j}}
+\newcommand{\E}{{\mathrm E}}
+\newcommand{\Ex}{{\mathbb E}}
+\renewcommand{\d}{{\mathrm d}}
+\newcommand{\dt}{{\mathrm d}t}
+\newcommand{\X}{ {\mathcal X} }
+\newcommand{\Y}{ {\mathcal Y} }
+\newcommand{\Z}{ {\mathcal Z} }
+
+
+
+\newcommand{\calA}{{\mathcal A}}
+\newcommand{\calB}{{\mathcal B}}
+\newcommand{\calC}{{\mathcal C}}
+\newcommand{\calD}{{\mathcal D}}
+\newcommand{\calE}{{\mathcal E}}
+\newcommand{\calF}{{\mathcal F}}
+\newcommand{\calG}{{\mathcal G}}
+\newcommand{\calH}{{\mathcal H}}
+\newcommand{\calI}{{\mathcal I}}
+\newcommand{\calJ}{{\mathcal J}}
+\newcommand{\calK}{{\mathcal K}}
+\newcommand{\calL}{{\mathcal L}}
+\newcommand{\calM}{{\mathcal M}}
+\newcommand{\calN}{{\mathcal N}}
+\newcommand{\calO}{{\mathcal O}}
+\newcommand{\calP}{{\mathcal P}}
+\newcommand{\calQ}{{\mathcal Q}}
+\newcommand{\calR}{{\mathcal R}}
+\newcommand{\calS}{{\mathcal S}}
+\newcommand{\calT}{{\mathcal T}}
+\newcommand{\calU}{{\mathcal U}}
+\newcommand{\calV}{{\mathcal V}}
+\newcommand{\calX}{{\mathcal X}}
+\newcommand{\calY}{{\mathcal Y}}
+\newcommand{\calW}{{\mathcal W}}
+\newcommand{\calZ}{{\mathcal Z}}
+\newcommand{\qtil}{{\tilde{q}}}
+\newcommand{\td}{{\tilde{\delta}}}
+
+\newcommand{\vect}[1]{ {\mbox{\rm vec}(#1)} }
+
+% Macro comandi:
+
+\newcommand{\Atil}{\tilde{A}}
+\newcommand{\Zhat}{\hat{Z}}
+\newcommand{\Hbar}{\bar{H}}
+\newcommand{\Dhat}{\hat{D}}
+\newcommand{\dhat}{\hat{d}}
+%
+
+\newcommand{\rhat}{\hat{r}}
+\newcommand{\xhat}{\hat{x}}
+\newcommand{\yhat}{\hat{y}}
+\newcommand{\zhat}{\hat{z}}
+\newcommand{\xbar}{\bar{x}}
+\newcommand{\ubar}{\bar{u}}
+\newcommand{\ybar}{\bar{y}}
+\newcommand{\zbar}{\bar{z}}
+%
+\newcommand{\pdot}{\dot{p}}
+\newcommand{\pddot}{\ddot{p}}
+\newcommand{\pbar}{\bar{p}}
+%
+\newcommand{\qdot}{\dot{q}}
+\newcommand{\qddot}{\ddot{q}}
+\newcommand{\qbar}{\bar{q}}
+%
+\newcommand{\xdot}{\dot{x}}
+\newcommand{\ydot}{\dot{y}}
+\newcommand{\zdot}{\dot{z}}
+\newcommand{\yddot}{\ddot{y}}
+\newcommand{\thdot}{\dot{\theta}}
+\newcommand{\thddot}{\ddot{\theta}}
+\newcommand{\util}{{\tilde{u}}}
+\newcommand{\xtil}{{\tilde{x}}}
+\newcommand{\ytil}{{\tilde{y}}}
+\newcommand{\lam}{\lambda}
+\newcommand{\lamax}{\lambda\ped{max}}
+\newcommand{\lamin}{\lambda\ped{min}}
+%
+\newcommand{\adj}{ {\mbox{\rm adj}\;} }
+\newcommand{\sign}{\mbox {\rm sgn}}
+\newcommand{\spn}{\mbox {\rm span}}
+\newcommand{\barJ}{\bar{J}}
+\newcommand{\dom}{\mathop {\mathrm {dom}}}
+\newcommand{\card}{\mathop{\mathrm{card}}}
+\newcommand{\subt}{\mathop{\mathrm{s.t.}}}
+
+\newcommand{\epi}{\mathop{\mathrm{epi}}}
+\newcommand{\env}{\mathop{\mathrm{env}}}
+\newcommand{\chull}{\mathop{\mathrm{co}}}
+\newcommand{\graph}{\mathop{\mathrm{graph}}}
+\newcommand{\prox}[1]{\mathop{\mathrm{prox}_{#1}}}
+\newcommand{\sthr}[1]{\mathop{\mathrm{sthr}_{#1}}}
+
+\def\hardsection{$\spadesuit\;$}
+
+
+
+
+
+%%%% Fields and Groups
+\newcommand{\Real}[1]{ { {\mathbb R}^{#1} } }
+\newcommand{\Realp}[1]{ { {\mathbb R}_{+}^{#1} } }
+\newcommand{\Realpp}[1]{ { {\mathbb R}_{++}^{#1} } }
+\newcommand{\Complex}[1]{ { {\mathbb C}^{#1} } }
+\newcommand{\Imag}[1]{ { {\mathbb I}^{#1} } }
+\newcommand{\Field}[1]{ {\mathbb F}^{#1} }
+\newcommand{\F}{ {\mathbb F}}
+\newcommand{\Orth}[1]{ { {\calG_{\calO}^{#1}} } }
+\newcommand{\Unit}[1]{ { {\calG_{\calU}^{#1}} } }
+\newcommand{\Sym}[1]{ { {\mathbb S}^{#1} } }
+\newcommand{\Symp}[1]{ { {\mathbb S}_{+}^{#1} } }
+\newcommand{\Sympp}[1]{ { {\mathbb S}_{++}^{#1} } }
+\newcommand{\Herm}[1]{ { {\mathbb H}^{#1} } }
+\newcommand{\Skew}[1]{ { {\mathbb S\mathbb K}^{#1} } }
+\newcommand{\Skherm}[1]{ { {\mathbb H\mathbb K}^{#1} } }
+% manifolds (in matrices)
+\newcommand{\Rman}[1]{ { {\mathcal R}^{#1} } } 
+\newcommand{\Cman}[1]{ { {\mathcal C}^{#1} } }
+%
+\newcommand{\Hinf}[1]{ {  {\mathcal H}_\infty^{#1} } }
+\newcommand{\RHinf}[1]{ { {\mathcal RH}_\infty^{#1} } }
+\newcommand{\Htwo}[1]{ {  {\mathcal H}_2^{#1} } }
+\newcommand{\RHtwo}[1]{ { {\mathcal RH}_2^{#1} } }
+
+\newcommand{\dist}[1]{{\mathrm{dist}}{\left( #1 \right)}}
+%
+\newcommand{\diff}[2]{ \frac{\d {#1}}{\d {#2}}  }
+\newcommand{\diffp}[2]{ \frac{\partial {#1}}{\partial {#2}}  }
+\newcommand{\diffqd}[2]{ \frac{\d^2 {#1}}{\d {#2}^2}  }
+\newcommand{\diffq}[2]{ \frac{\d^2 {#1}}{\d {#2}}  }
+\newcommand{\diffqq}[3]{ \frac{\d^2 {#1}}{ \d {#2} \d {#3}  }}
+\newcommand{\diffpq}[2]{ \frac{\partial^2 {#1}}{\partial {#2}^2}  }
+\newcommand{\difftq}[3]{ \frac{\partial^2 {#1}}{\partial {#2}\partial {#3}}  }
+\newcommand{\diffi}[3]{ \frac{\d^{#3} {#1}}{\d {#2}^{#3}}  }
+\newcommand{\diffpi}[3]{ \frac{\partial^{#3} {#1}}{\partial {#2}^{#3}}  }
+\newcommand{\binomial}[2]{\scriptsize{\left(\!\! \ba{c} #1 \\ #2 \ea \!\! \right)} }
+\newcommand{\comb}[2]{{\left(\!\!\! \ba{c} #1 \\ #2 \ea \!\!\! \right)} }
+
+\newcommand{\simax}{{\sigma_{\mathrm{max}}}}
+\newcommand{\simin}{{\sigma_{\mathrm{min}}}}
+\newcommand{\prob}{{\mbox{\rm Prob}}}
+\newcommand{\var}{{\mbox{\rm var}}}
+\newcommand{\sint}{{\mbox{\rm int}\,}} %set interior
+\newcommand{\relint}{{\mbox{\rm relint}\,}} %set interior
+\newcommand{\ns}{{\mbox{\tt ns}}} 
+
+%
+
+\newcommand{\rank}{\mathop{\mathrm{rank}}\nolimits}
+\newcommand{\range}{\mathop{\mathcal{R}}\nolimits}
+\newcommand{\nulsp}{\mathop{\mathcal{N}}\nolimits}
+\newcommand{\diagop}{\mathop{\mathrm{diag}}\nolimits}
+\newcommand{\Var}{\mathop{\mathrm{var}}\nolimits}
+\newcommand{\tr}{\mathop{\mathrm{trace}}\nolimits}
+\newcommand{\sinc}{\mathop{\mathrm{sinc}}\nolimits}
+
+%%%% Real and Imaginary
+\newcommand{\pre}[1]{ { {\mathop{\mathrm{Re}}}  \left({#1}\right)} }
+\newcommand{\pim}[1]{ { {\mathop{\mathrm{Im}}}  ({#1})} }
+\newcommand{\rp}{ ^{\Real{}} }
+\newcommand{\ip}{ ^{\Imag{}} }
+
+
+
+%%%% Various
+\newcommand{\one}{{\mathbf  1}}
+%\newcommand{\qed}{{\hfill $\square$}}
+\newcommand{\dss}{\displaystyle}
+\newcommand{\inv}{^{-1}}
+\newcommand{\pinv}{^{\dagger}}
+\newcommand{\diag}[1]{\mathrm{diag}\left({#1}\right)}
+\newcommand{\blockdiag}[1]{\mbox{\rm bdiag}\left({#1}\right)}
+\newcommand{\tran}{^{\top}}
+\newcommand{\inner}[1]{\langle {#1} \rangle}
+\newcommand{\ped}[1]{_{\mathrm{#1}}}
+\newcommand{\ap}[1]{^{\mathrm{#1}}}
+
+\newcommand{\blu}[1]{\textcolor{blue}{#1}}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+\newcommand{\cyan}[1]{\textcolor{cyan}{#1}}
+\newcommand{\comment}[1]{\vspace{.1cm} \blu{#1} \vspace{.1cm}}
+
+
+
+%%%% Commands
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\beas}{\begin{eqnarray*}}
+\newcommand{\eeas}{\end{eqnarray*}}
+\newcommand{\ba}{\begin{array}}
+\newcommand{\ea}{\end{array}}
+\newcommand{\bit}{\begin{itemize}}
+\newcommand{\eit}{\end{itemize}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+\newcommand{\bde}{\begin{description}}
+\newcommand{\ede}{\end{description}}
+\newcommand{\bsp}{\begin{split}}
+\newcommand{\esp}{\end{split}}
+
+%% Environments
+%\newtheorem{corollary}{Corollary}
+%\newtheorem{exercise}{Exercise}
+%\newtheorem{solution}{Solution}
+%\newtheorem{algorithm}{Algorithm}
+%\newtheorem{assumption}{Assumption}
+%\newtheorem{definition}{Definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{procedure}{Procedure}
+%\newtheorem{lemma}{Lemma}
+%\newtheorem{fact}{Fact}
+%\newtheorem{example}{Example}
+%\theoremstyle{remark}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem*{remark}{Remark}
+
+%%% margin stuff
+%% example in the margin
+%\newcommand{\marginex}[1]{
+%\marginnote{\refstepcounter{examplectr}{\bfseries\textsf{Example \theexamplectr.}} 
+%#1
+%}}
+%
+%% remark in the margin
+%\newcommand{\marginrmk}[1]{
+%\marginnote{\refstepcounter{remarkctr}{\bfseries\textsf{Remark \theremarkctr.}} 
+%#1
+%}}
+%
+%% algorithm in the margin
+%\newcommand{\marginalg}[1]{
+%\marginnote{\refstepcounter{algorithmctr}{\bfseries\textsf{Algorithm \thealgorithmctr.}} 
+%#1
+%}}
+
+%% misc
+% these commands are to make things compile
+\def\nocolon{}
+
+% Prints the month name (e.g., January) and the year (e.g., 2008)
+\newcommand{\monthyear}{%
+  \ifcase\month\or January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or
+  December\fi\space\number\year
+}
+
+% Prints an epigraph and speaker in sans serif, all-caps type.
+\newcommand{\openepigraph}[2]{%
+  %\sffamily\fontsize{14}{16}\selectfont
+  \begin{fullwidth}
+  \sffamily\large
+  \begin{doublespace}
+  \noindent\allcaps{#1}\\% epigraph
+  \noindent\allcaps{#2}% author
+  \end{doublespace}
+  \end{fullwidth}
+}
+
+% Inserts a blank page
+\newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
+
+

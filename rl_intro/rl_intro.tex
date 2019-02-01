@@ -1,0 +1,788 @@
+\documentclass[9pt]{beamer}
+\usepackage{beamerthemesplit}
+%\usepackage{times}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{thmtools,thm-restate}
+\usepackage[font=small]{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{animate}
+\usepackage{media9}
+\usepackage{multimedia}
+\usepackage{hyperref}
+
+\usetheme{Madrid}
+
+\graphicspath{{./images/}}
+
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+
+\newcommand{\underE}[2]{\underset{\begin{subarray}{c}#1 \end{subarray}}{\E}\left[ #2 \right]}
+
+
+\newcommand\Fontvi{\fontsize{6}{7.2}\selectfont}
+\renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
+
+\newcommand{\twocolumns}[4]{
+\begin{columns}
+\begin{column}{#1\textwidth}
+    #3
+\end{column}
+\begin{column}{#2\textwidth}
+	#4
+\end{column}
+\end{columns}
+}
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{courier}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    %numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstdefinestyle{mystyle2}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\tiny\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    %numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstdefinestyle{mystyle3}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\scriptsize\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    %numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle3}
+
+
+\begin{document}
+\input{exercises_def.tex}
+
+\title{Introduction to Deep RL, Part 1}
+\author{Joshua Achiam}
+\institute{OpenAI}
+\titlegraphic{\includegraphics[height=2cm]{spinning-up-logo2}}
+%\date{March 3, 2018}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+\section{1.0: What is Spinning Up?}
+
+\begin{frame}{Education at OpenAI}
+
+Mandate from OpenAI Charter: 
+\begin{itemize}
+\item "We seek to create a global community working together to address AGI’s global challenges."
+\item "We are committed to providing public goods that help society navigate the path to AGI."
+\end{itemize}
+\begin{figure}
+\centering
+\includegraphics[height=5cm]{education_at_openai}
+\end{figure}
+
+\begin{center}
+\url{https://blog.openai.com/openai-charter/}
+\end{center}
+\end{frame}
+
+\begin{frame}{Spinning Up in Deep RL}
+
+Deep RL will be a key technology in AGI: therefore, it is important to educate the public.
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+\centering
+\includegraphics[height=5cm]{spinningup_website}
+\end{figure}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{itemize}
+\item A short intro to RL 
+\item An essay about becoming an RL researcher
+\item A curated list of important papers
+\item A code repo of key algorithms (VPG, TRPO, PPO, DDPG, TD3, SAC)
+\item Warm-up coding exercises
+\end{itemize}
+\end{column}
+\end{columns}
+\begin{center}
+\url{https://spinningup.openai.com/en/latest/}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Spinning Up Workshops}
+
+Hypothesis:
+\begin{itemize}
+\item Working with people directly will help them learn and build skills faster
+\end{itemize}
+
+Educational objectives:
+\begin{itemize}
+\item Teach current capabilities and limitations of deep RL
+\item Raise awareness of work that needs doing in the field
+\item Participants run and tinker with deep RL algorithms for the first time, and feel confident that they can keep doing it
+\end{itemize}
+\begin{figure}
+\centering
+\includegraphics[height=3cm]{hackathon}
+\end{figure}
+
+\end{frame}
+
+\section{1.1: What is deep RL, and why do we care about it?}
+
+\begin{frame}{What is Deep RL?}
+Deep RL is the combination of \textbf{reinforcement learning (RL)} with \textbf{deep learning}
+
+\begin{itemize}
+\item \textbf{Reinforcement learning} is about solving problems by \textbf{trial and error}
+\item \textbf{Deep learning} is about using \textbf{deep neural networks} to solve problems
+\item $\Longrightarrow$ \textbf{Deep reinforcement learning} trains deep neural networks with trial and error
+\end{itemize}
+
+\twocolumns{0.4}{0.6}{
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{deep-neural-networks}
+\end{figure}
+}{
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{agent-interaction-loop}
+\end{figure}
+}
+\begin{center}
+Deep neural network\footnote{Deep neural network image from Gary Marcus} and RL interaction loop
+\end{center}
+\end{frame}
+
+\begin{frame}{When would you want to use RL?}
+
+RL is useful when
+%
+\begin{itemize}
+\item you have a sequential decision-making problem
+\item you do \textbf{not} know the optimal behavior already\footnotemark[1]
+\item but you can still evaluate whether behaviors are good or bad
+\end{itemize}
+
+\vspace{3em}
+
+That is, 
+
+\begin{center}
+\boxed{
+\textbf{RL is useful when evaluating behaviors is easier than generating them}
+}
+\end{center}
+
+\footnotetext[1]{Critical difference from supervised learning!}
+
+\end{frame}
+
+\begin{frame}{When would you want to use deep learning?}
+
+\twocolumns{0.5}{0.5}{
+Deep learning is useful when
+%
+\begin{itemize}
+\item you want to approximate a function
+\item function requires ``intelligence"
+\item inputs and/or outputs are high-dimensional
+\item lots of data is available
+\end{itemize}
+
+\vspace{2em}
+
+This includes \textbf{tons} of problems!
+%
+\begin{itemize}
+\item image recognition / facial classification
+\item sentiment analysis
+\item neural machine translation
+\item automatic speech recognition
+\item etc.
+\end{itemize}
+}{
+\begin{figure}
+\centering
+\includegraphics[width=0.85\textwidth]{dl-object-detection}
+\caption{Object detection\footnotemark[1]}
+\end{figure}
+\begin{figure}
+\includegraphics[width=0.85\textwidth]{dl-neural-machine-translation}
+\caption{Machine translation\footnotemark[2]}
+\end{figure}
+}
+
+\footnotetext[1]{Intel Software,``A Closer Look at Object Detection, Recognition and Tracking"}
+\footnotetext[2]{Nvidia Developer Blog, ``Introduction to Neural Machine Translation with GPUs"}
+
+\end{frame}
+
+\begin{frame}{When would you want to use deep RL?}
+Deep RL can...
+\begin{itemize}
+\item Play video games from raw pixels
+\item Control robots in simulation and in the real world
+\item Play Go, Dota, and Starcraft at superhuman levels
+\end{itemize}
+
+\begin{columns}
+\begin{column}{0.33\textwidth}
+    \begin{center}
+     \includegraphics[width=0.9\textwidth]{ms_pacman}
+
+     \includegraphics[width=0.9\textwidth]{alphago}
+     \end{center}
+\end{column}
+\begin{column}{0.67\textwidth}
+\movie[width=0.9\textwidth, autostart, loop]{\includegraphics[width=0.9\textwidth]{knocked_down_standup}}{images/knocked-over-stand-up.mp4}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Interlude: Recap of deep learning patterns}
+
+\begin{frame}{Deep Learning: High-level}
+
+Usual paradigm:
+%
+\begin{itemize}
+\item we want to find a \textbf{model} that gives target \textbf{outputs} for particular \textbf{inputs},
+\item we represent the model as a \textbf{function of parameters},
+\begin{equation*}
+f_{\theta}(x) = W_2 \sigma\left( W_1 x + b_1 \right) + b_2, \;\;\;\;\; \theta = \{W_1, W_2, b_1, b_2\}
+\end{equation*}
+\item we can evaluate the model performance with a \textbf{differentiable loss function} that depends on \textbf{a set of data},
+\begin{equation*}
+\calL(\theta) = \frac{1}{|\calD|}\sum_{(x,y)\in\calD} L(x,y,f_{\theta}(x))
+\end{equation*}
+\item and we find the optimal model by \textbf{gradient descent on the loss}.
+\begin{equation*}
+\theta \leftarrow \theta - \alpha \nabla_{\theta} \calL(\theta)
+\end{equation*}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Deep Learning: What makes it deep?}
+
+The ``deep" in deep learning refers to using \textbf{function composition} as the building block for models
+
+Deep models have many \textbf{layers}: output of one layer is input to next
+
+\end{frame}
+
+\section{1.2: How do we formulate RL problems?}
+
+\begin{frame}[fragile]{What is RL?}
+
+\begin{itemize}
+\item An \textit{agent} interacts with an \textit{environment}. 
+\begin{columns}
+\begin{column}{0.5\textwidth}
+    \begin{center}
+     \includegraphics[width=\textwidth]{rl_diagram}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}  %%<--- here
+\begin{lstlisting}[language=python]
+  obs = env.reset()
+  done = False
+  while not(done):
+  	act = agent.get_action(obs)
+  	next_obs, reward, done, info = env.step(act)
+  	obs = next_obs
+\end{lstlisting}
+\end{column}
+\end{columns}
+\item The goal of the agent is to maximize cumulative reward (called \textit{return}). 
+\item Reinforcement learning (RL) is a field of study for algorithms that do that.
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Key Concepts in RL}
+
+Before we can talk about algorithms, we have to talk about:
+\begin{itemize}
+\item Trajectories
+\item Return
+\item Policies
+\item The RL optimization problem
+\item Value and Action-Value Functions
+\end{itemize}
+
+\textbf{Note}: For this talk, we will talk about all of these things in the context of \textit{deep} RL, where we use neural networks to represent them.
+
+\end{frame}
+
+\begin{frame}{Trajectories}
+
+\begin{itemize}
+\item A \textbf{trajectory} $\tau$ is a sequence of states and actions in an environment:
+\begin{equation*}
+\tau = (s_0, a_0, s_1, a_1, ...).
+\end{equation*}
+\begin{itemize}
+\item The initial state $s_0$ is sampled from a \textit{start state distribution} $\mu$:
+%
+\begin{equation*}
+s_0 \sim \mu(\cdot).
+\end{equation*}
+\item State transitions depend only on the most recent state and action. They could be deterministic:
+%
+\begin{equation*}
+s_{t+1} = f(s_t, a_t),
+\end{equation*}
+%
+or stochastic:
+%
+\begin{equation*}
+s_{t+1} \sim P(\cdot | s_t, a_t).
+\end{equation*}
+\end{itemize}
+\item A trajectory is sometimes also called an \textbf{episode} or \textbf{rollout}. 
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Reward and Return}
+
+The \textbf{reward} function of an environment measures how good state-action pairs are:
+%
+\begin{equation*}
+r_t = R(s_t, a_t).
+\end{equation*}
+
+\begin{itemize}
+\item Example: if you want a robot to run forwards but use minimal energy, $R(s, a) = v - \alpha \|a\|_2^2$. 
+\end{itemize}
+\pause
+The \textbf{return} of a trajectory is a measure of cumulative reward along it. There are two main ways to compute return:
+\begin{itemize}
+\item Finite horizon undiscounted sum of rewards::
+\begin{equation*}
+R(\tau) = \sum_{t=0}^T r_t
+\end{equation*}
+\item Infinite horizon discounted sum of rewards:
+\begin{equation*}
+R(\tau) = \sum_{t=0}^{\infty} \gamma^t r_t
+\end{equation*}
+%
+where $\gamma \in (0,1)$. This makes rewards less valuable if they are further in the future. (Why would we ever want this? Think about cash: it's valuable to have it sooner rather than later!)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Policies}
+
+A \textbf{policy} $\pi$ is a rule for selecting actions. It can be either
+\begin{itemize}
+\item \textbf{stochastic}, which means that it gives a probability distribution over actions, and actions are selected randomly based on that distribution ($a_t \sim \pi(\cdot|s_t)$),
+\item or \textbf{deterministic}, which means that $\pi$ directly maps to an action ($a_t = \pi(s_t)$). 
+\end{itemize}
+
+\pause
+
+
+\lstset{style=mystyle}
+
+Examples of policies:
+%
+\begin{itemize}
+\item Stochastic policy over discrete actions:
+\begin{lstlisting}[language=python]
+  obs = tf.placeholder(shape=(None, obs_dim), dtype=tf.float32)
+  net = mlp(obs, hidden_dims=(64,64), activation=tf.tanh)
+  logits = tf.layers.dense(net, units=num_actions, activation=None)
+  actions = tf.squeeze(tf.multinomial(logits=logits,num_samples=1), axis=1)
+\end{lstlisting}
+\item Deterministic policy for a vector-valued continuous action:
+\begin{lstlisting}[language=python]
+  obs = tf.placeholder(shape=(None, obs_dim), dtype=tf.float32)
+  net = mlp(obs, hidden_dims=(64,64), activation=tf.tanh)
+  actions = tf.layers.dense(net, units=act_dim, activation=None)
+\end{lstlisting}
+
+\end{itemize}
+
+\lstset{style=mystyle3}
+
+\end{frame}
+
+\begin{frame}{The Reinforcement Learning Problem}
+
+The goal in RL is to learn a policy which maximizes expected return. The optimal policy $\pi^*$ is:
+%
+\begin{equation*}
+\pi^* = \arg \max_{\pi} \underE{\tau \sim \pi}{R(\tau)},
+\end{equation*}
+%
+where by $\tau \sim \pi$, we mean
+%
+\begin{equation*}
+s_0 \sim \mu(\cdot), \;\;\;\;\; a_t \sim \pi(\cdot|s_t), \;\;\;\;\; s_{t+1} \sim P(\cdot | s_t, a_t).
+\end{equation*}
+
+
+There are two main approaches for solving this problem:
+\begin{itemize}
+\item policy optimization
+\item and Q-learning.
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Value Functions and Action-Value Functions}
+
+Value functions tell you the expected return after a state or state-action pair.
+%
+\begin{align*}
+V^{\pi}(s) &= \underE{\tau \sim \pi}{R(\tau)\left| s_0 = s\right.} && \text{Start in }s\text{ and then sample from }\pi \\
+Q^{\pi}(s,a) &= \underE{\tau \sim \pi}{R(\tau)\left| s_0 = s, a_0 = a\right.} && \text{Start in }s\text{, take action }a\text{, then sample from }\pi \\
+V^*(s) &= \max_{\pi} \underE{\tau \sim \pi}{R(\tau)\left| s_0 = s\right.} && \text{Start in }s\text{ and then act optimally} \\
+Q^*(s,a) &= \max_{\pi} \underE{\tau \sim \pi}{R(\tau)\left| s_0 = s, a_0 = a\right.} &&\text{Start in }s\text{, take action }a\text{, then act optimally}
+\end{align*}
+
+The value functions satisfy recursive \textbf{Bellman equations}:
+%
+\begin{align*}
+V^{\pi}(s) &= \underE{a \sim \pi \\ s'\sim P}{r(s,a) + \gamma V^{\pi}(s')} &&&
+Q^{\pi}(s,a) &= \underE{s'\sim P}{r(s,a) + \gamma \underE{a'\sim \pi}{Q^{\pi}(s',a')}} \\
+V^*(s) &= \max_a \underE{s'\sim P}{r(s,a) + \gamma V^{\pi}(s')} &&&
+Q^*(s,a) &= \underE{s'\sim P}{r(s,a) + \gamma \max_{a'} Q^{\pi}(s',a')}
+\end{align*}
+
+\end{frame}
+
+
+\begin{frame}{$Q^*$}
+The optimal $Q$ function, $Q^*$, is especially important because it gives us a policy. In any state $s$, the optimal action is
+%
+\begin{equation*}
+a^* = \arg \max_a Q^* (s, a).
+\end{equation*}
+
+We can measure how good a $Q^*$-approximator, $Q_{\theta}$, is by measuring its \textbf{mean-squared Bellman error}:
+%
+\begin{equation*}
+\ell(\theta) = \frac{1}{|\calD|} \sum_{(s,a,s',r) \in \calD} \left( Q_{\theta}(s,a) - \left(r + \gamma \max_{a'} Q_{\theta}(s',a')\right)\right)^2.
+\end{equation*}
+%
+This (roughly) says how well it satisfies the Bellman equation
+%
+\begin{equation*}
+Q^*(s,a) = \underE{s'\sim P}{r(s,a) + \gamma \max_{a'} Q^{\pi}(s',a')}
+\end{equation*}
+
+\end{frame}
+
+\section{Deep RL Algorithms}
+
+\begin{frame}{Deep RL Algorithms}
+There are many different kinds of RL algorithms! This is a non-exhaustive taxonomy (with specific algorithms in blue):
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{rl_algorithms}
+\end{figure}
+We will talk about two of them: Policy Gradient and DQN.
+\end{frame}
+
+\begin{frame}{A Few Notes}
+
+Using Model-Free RL Algorithms:
+\begin{center}
+\begin{tabular}{c|c|c}
+Algorithm &  $a$ Discrete &$a$  Continuous \\ \hline
+Policy optimization & Yes & Yes \\
+DQN / C51 / QR-DQN & Yes & \color{red}{No} \\
+DDPG & \color{red}{No} & Yes
+\end{tabular}
+\end{center}
+
+Using Model-Based RL Algorithms:
+\begin{itemize}
+\item Learning the model means learning to generate next state and/or reward:
+%
+\begin{equation*}
+\hat{s}_{t+1}, \hat{r}_t = \hat{f}_{\phi}(s_t, a_t)
+\end{equation*}
+\item Some algorithms may only work with an \textit{exact} model of the environment
+\begin{itemize}
+\item AlphaZero uses the rules of the game to build its search tree
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Policy Gradients}
+
+
+\begin{itemize}
+\item An algorithm for training stochastic policies:
+\begin{itemize}
+\item Run current policy in the environment to collect rollouts
+\item Take stochastic gradient ascent on policy performance using the \textbf{policy gradient}:
+\begin{align*}
+g &= \nabla_{\theta} \underE{\tau \sim \pi_{\theta}}{\sum_{t=0}^T r_t} \\
+&= \underE{\tau \sim \pi_{\theta}}{\sum_{t=0}^T \nabla_{\theta} \log \pi_{\theta}(a_t | s_t) \left(\sum_{t'=t}^T r_{t'}\right)}\\
+&\approx \frac{1}{|\calD|}\sum_{\tau \in \calD} \sum_{t=0}^T \nabla_{\theta} \log \pi_{\theta}(a_t | s_t) \left(\sum_{t'=t}^T r_{t'}\right)
+\end{align*}
+\end{itemize}
+\item Core idea: push up the probabilities of good actions and push down the probabilities of bad actions
+\item Definition: sum of rewards after time $t$ is the \textit{reward-to-go} at time $t$:
+%
+\begin{equation*}
+\hat{R}_t = \sum_{t'=t}^T r_{t'}
+\end{equation*}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Example Implementation}
+
+\lstset{style=mystyle}
+Make the model, loss function, and optimizer:
+\begin{lstlisting}[language=python]
+ # make model
+ with tf.variable_scope('model'):
+     obs_ph = tf.placeholder(shape=(None, obs_dim), dtype=tf.float32)
+     net = mlp(obs_ph, hidden_sizes=[hidden_dim]*n_layers)
+     logits = tf.layers.dense(net, units=n_acts, activation=None)
+     actions = tf.squeeze(tf.multinomial(logits=logits,num_samples=1), axis=1)
+
+ # make loss
+ adv_ph = tf.placeholder(shape=(None,), dtype=tf.float32)
+ act_ph = tf.placeholder(shape=(None,), dtype=tf.int32)
+ action_one_hots = tf.one_hot(act_ph, n_acts)
+ log_probs = tf.reduce_sum(action_one_hots * tf.nn.log_softmax(logits), axis=1)
+ loss = -tf.reduce_mean(adv_ph * log_probs)
+
+ # make train op
+ train_op = tf.train.AdamOptimizer(learning_rate=lr).minimize(loss)
+
+ sess = tf.InteractiveSession()
+ sess.run(tf.global_variables_initializer())
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]{Example Implementation (Continued)}
+
+\lstset{style=mystyle}
+One iteration of training:
+\begin{lstlisting}[language=python]
+# train model for one iteration
+batch_obs, batch_acts, batch_rtgs, batch_rets, batch_lens = [], [], [], [], []
+obs, rew, done, ep_rews = env.reset(), 0, False, []
+while True:
+    batch_obs.append(obs.copy())
+    act = sess.run(actions, {obs_ph: obs.reshape(1,-1)})[0]
+    obs, rew, done, _ = env.step(act)
+    batch_acts.append(act)
+    ep_rews.append(rew)
+    if done:
+        batch_rets.append(sum(ep_rews))
+        batch_lens.append(len(ep_rews))
+        batch_rtgs += list(discount_cumsum(ep_rews, gamma))
+        obs, rew, done, ep_rews = env.reset(), 0, False, []
+        if len(batch_obs) > batch_size:
+            break
+
+# normalize advs trick:
+batch_advs = np.array(batch_rtgs)
+batch_advs = (batch_advs - np.mean(batch_advs))/(np.std(batch_advs) + 1e-8)
+batch_loss, _ = sess.run([loss,train_op], feed_dict={obs_ph: np.array(batch_obs),
+                                                     act_ph: np.array(batch_acts),
+                                                     adv_ph: batch_advs})
+\end{lstlisting}
+
+
+\lstset{style=mystyle3}
+
+\end{frame}
+
+\begin{frame}{Q-Learning}
+
+\begin{itemize}
+\item Core idea: learn $Q^*$ and use it to get the optimal actions
+\item Way to do it:
+\begin{itemize}
+\item Collect experience in the environment using a policy which trades off between acting randomly and acting according to current $Q_{\theta}$
+\item Interleave data collection with updates to $Q_{\theta}$ to minimize Bellman error:
+%
+\begin{equation*}
+\min_{\theta} \sum_{(s,a,s',r)\in \calD} \left(Q_{\theta}(s,a) - \left(r + \gamma \max_{a'} Q_{\theta}(s',a') \right) \right)^2
+\end{equation*}
+...sort of! This actually won't work!
+\end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Getting Q-Learning to Work (DQN)}
+
+Experience replay:
+\begin{itemize}
+\item Data distribution changes over time: as your $Q$ function gets better and you \textit{exploit} this, you visit different $(s,a,s',r)$ transitions than you did earlier
+\item Stabilize learning by keeping old transitions in a replay buffer, and taking minibatch gradient descent on mix of old and new transitions
+\end{itemize}
+\pause
+Target networks:
+\begin{itemize}
+\item Minimizing Bellman error directly is unstable! 
+\item It's \textit{like} regression, but it's not:
+%
+\begin{equation*}
+\min_{\theta} \sum_{(s,a,s',r)\in \calD} \left(Q_{\theta}(s,a) - y(s',r) \right)^2,
+\end{equation*}
+%
+where the target $y(s',r)$ is
+%
+\begin{equation*}
+y(s',r) = r + \gamma \max_{a'} Q_{\theta}(s',a').
+\end{equation*}
+%
+Targets depend on parameters $\theta$---so an update to $Q$ changes the target!
+\item Stabilize it by \textit{holding the target fixed} for a while: keep a separate target network, $Q_{\theta_{targ}}$, and every $k$ steps update $\theta_{targ} \leftarrow \theta$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{DQN Pseudocode}
+
+\begin{algorithm}[H]
+\small
+   \caption{Deep Q-Learning}
+   \label{alg1}
+\begin{algorithmic}
+     \STATE Randomly generate $Q$-function parameters $\theta$
+     \STATE Set target $Q$-network parameters $\theta_{targ} \leftarrow \theta$
+     \STATE Make empty replay buffer $\calD$
+	 \STATE Receive observation $s_0$ from environment
+	 \FOR{$t = 0,1,2,...$} 
+	 \STATE With probability $\epsilon$, select random action $a_t$; otherwise select $a_t = \arg \max_{a} Q_{\theta}(s_t, a)$
+	 \STATE Step environment to get $s_{t+1}, r_t$ and end-of-episode signal $d_t$
+	 \STATE Linearly decay $\epsilon$ until it reaches final value $\epsilon_f$
+	 \STATE Store $(s_t, a_t, r_t, s_{t+1}, d_t) \to \calD$
+	 \STATE Sample mini-batch of transitions $B = \{(s,a,r,s',d)_i\}$ from $\calD$
+	 \STATE For each transition in $B$, compute 
+	 \begin{equation*}
+	 y = \left\{ \begin{array}{ll}
+	 r & \text{transition is terminal }(d=\text{True}) \\
+	 r + \gamma \max_{a'} Q_{\theta_{targ}}(s', a') & \text{otherwise}
+	 \end{array}\right.
+	 \end{equation*}
+	 \STATE Update $Q$ by gradient descent on regression loss:
+	 %
+	 \begin{equation*}
+	 \theta \leftarrow \theta - \alpha \nabla_{\theta} \sum_{(s,a,y)\in B} \left(Q_{\theta}(s,a) - y \right)^2
+	 \end{equation*}
+	 \IF{ $t \% t_{update} =0$}
+	 	\STATE Set $\theta_{targ} \leftarrow \theta$
+	 \ENDIF
+
+	\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\end{frame}
+
+
+\begin{frame}{Recommended Reading: Deep RL Algorithms}
+
+\begin{itemize}
+\item A2C / A3C: Mnih et al, 2016 (\url{https://arxiv.org/abs/1602.01783})
+\item PPO: Schulman et al, 2017 (\url{https://arxiv.org/abs/1707.06347})
+\item TRPO: Schulman et al, 2015 (\url{https://arxiv.org/abs/1502.05477})
+\item DQN: Mnih et al, 2013 (\url{https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf})
+\item C51: Bellemare et al, 2017 (\url{https://arxiv.org/abs/1707.06887})
+\item QR-DQN: Dabney et al, 2017 (\url{https://arxiv.org/abs/1710.10044})
+\item DDPG: Lillicrap et al, 2015 (\url{https://arxiv.org/abs/1509.02971})
+\item SVG: Heess et al, 2015 (\url{https://arxiv.org/abs/1510.09142})
+\item I2A: Weber et al, 2017 (\url{https://arxiv.org/abs/1707.06203})
+\item MBMF: Nagabandi et al, 2017 (\url{https://sites.google.com/view/mbmf})
+\item AlphaZero: Silver et al, 2017 (\url{https://arxiv.org/abs/1712.01815})
+\end{itemize}
+
+\end{frame}
+
+
+\end{document}
