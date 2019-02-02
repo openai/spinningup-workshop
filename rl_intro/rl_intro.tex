@@ -237,7 +237,8 @@ In policy optimization, we train a \textbf{stochastic policy} $\pi_{\theta}$, us
 What we'll cover:
 \begin{itemize}
 \item Direct gradient ascent on $J(\pi_{\theta})$ (VPG)
-\item Optimization of surrogate advantage functions (TRPO and PPO)
+\item Various formulations of $\nabla_{\theta} J(\pi_{\theta})$
+\item Some material about natural policy gradients
 \end{itemize}
 
 \end{frame}
@@ -403,6 +404,18 @@ Which form do we use? Almost always the last one.
 
 \end{frame}
 
+\begin{frame}{The Policy Gradient: Key Concepts}
+
+\begin{equation*}
+\nabla_{\theta} J(\pi_{\theta}) = \underE{\tau \sim \pi_{\theta}}{\sum_{t=0}^T \nabla_{\theta} \log \pi_{\theta}(a_t | s_t) A^{\pi_{\theta}}(s_t, a_t)}
+\end{equation*}
+
+\begin{itemize}
+\item Pushes up the probabilities of ``good" actions and pushes down probabilities of ``bad" actions
+\item To estimate, \textbf{must sample on-policy}
+\end{itemize}
+\end{frame}
+
 \begin{frame}{The Policy Gradient: Policy Evaluation}
 
 The policy gradient expression gives us the \textbf{policy improvement} step, but we need to compute advantages: so how do we do \textbf{policy evaluation}?
@@ -417,6 +430,10 @@ Answer: first learn $V^{\pi}$ approximator by regression:
 
 Then use it to estimate $A^{\pi}$, usually with \textbf{generalized advantage estimation}
 
+\pause
+\vspace{2em}
+
+Wait, did you pull a fast one? Discount factor is in now? \textbf{Policy gradient implementations usually use discounted value functions, even though they (ostensibly) optimize the undiscounted objective.}
 \end{frame}
 
 \begin{frame}{The Policy Gradient: Generalized Advantage Estimation}
@@ -445,11 +462,11 @@ Generalized Advantage Estimates\footnote{Schulman et al, 2017: ``High-Dimensiona
 \end{frame}
 
 \begin{frame}{Vanilla Policy Gradient: Pseudocode}
-
     \begin{algorithm}[H]
         \caption{Vanilla Policy Gradient Algorithm}
         \label{alg1}
     \begin{algorithmic}[1]
+    \footnotesize{
         \STATE Input: initial policy parameters $\theta_0$, initial value function parameters $\phi_0$
         \FOR{$k = 0,1,2,...$} 
         \STATE Collect set of trajectories ${\mathcal D}_k = \{\tau_i\}$ by running policy $\pi_k = \pi(\theta_k)$ in the environment.
@@ -470,9 +487,9 @@ Generalized Advantage Estimates\footnote{Schulman et al, 2017: ``High-Dimensiona
             \end{equation*}
             typically via some gradient descent algorithm.
         \ENDFOR
+        }
     \end{algorithmic}
     \end{algorithm}
-
 \end{frame}
 
 \begin{frame}{Trust Region Policy Optimization: Pseudocode}
@@ -530,145 +547,69 @@ Generalized Advantage Estimates\footnote{Schulman et al, 2017: ``High-Dimensiona
 \end{frame}
 
 
-\begin{frame}{Mathematical Foundations of Q-Learning}
+\begin{frame}{Q-Learning Updates by Bootstrapping}
 
-
-
-\end{frame}
-
-\begin{frame}{Policy Gradients}
-
-
-\begin{itemize}
-\item An algorithm for training stochastic policies:
-\begin{itemize}
-\item Run current policy in the environment to collect rollouts
-\item Take stochastic gradient ascent on policy performance using the \textbf{policy gradient}:
-\begin{align*}
-g &= \nabla_{\theta} \underE{\tau \sim \pi_{\theta}}{\sum_{t=0}^T r_t} \\
-&= \underE{\tau \sim \pi_{\theta}}{\sum_{t=0}^T \nabla_{\theta} \log \pi_{\theta}(a_t | s_t) \left(\sum_{t'=t}^T r_{t'}\right)}\\
-&\approx \frac{1}{|\calD|}\sum_{\tau \in \calD} \sum_{t=0}^T \nabla_{\theta} \log \pi_{\theta}(a_t | s_t) \left(\sum_{t'=t}^T r_{t'}\right)
-\end{align*}
-\end{itemize}
-\item Core idea: push up the probabilities of good actions and push down the probabilities of bad actions
-\item Definition: sum of rewards after time $t$ is the \textit{reward-to-go} at time $t$:
-%
-\begin{equation*}
-\hat{R}_t = \sum_{t'=t}^T r_{t'}
-\end{equation*}
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}[fragile]{Example Implementation}
-
-\lstset{style=mystyle}
-Make the model, loss function, and optimizer:
-\begin{lstlisting}[language=python]
- # make model
- with tf.variable_scope('model'):
-     obs_ph = tf.placeholder(shape=(None, obs_dim), dtype=tf.float32)
-     net = mlp(obs_ph, hidden_sizes=[hidden_dim]*n_layers)
-     logits = tf.layers.dense(net, units=n_acts, activation=None)
-     actions = tf.squeeze(tf.multinomial(logits=logits,num_samples=1), axis=1)
-
- # make loss
- adv_ph = tf.placeholder(shape=(None,), dtype=tf.float32)
- act_ph = tf.placeholder(shape=(None,), dtype=tf.int32)
- action_one_hots = tf.one_hot(act_ph, n_acts)
- log_probs = tf.reduce_sum(action_one_hots * tf.nn.log_softmax(logits), axis=1)
- loss = -tf.reduce_mean(adv_ph * log_probs)
-
- # make train op
- train_op = tf.train.AdamOptimizer(learning_rate=lr).minimize(loss)
-
- sess = tf.InteractiveSession()
- sess.run(tf.global_variables_initializer())
-\end{lstlisting}
-
-\end{frame}
-
-\begin{frame}[fragile]{Example Implementation (Continued)}
-
-\lstset{style=mystyle}
-One iteration of training:
-\begin{lstlisting}[language=python]
-# train model for one iteration
-batch_obs, batch_acts, batch_rtgs, batch_rets, batch_lens = [], [], [], [], []
-obs, rew, done, ep_rews = env.reset(), 0, False, []
-while True:
-    batch_obs.append(obs.copy())
-    act = sess.run(actions, {obs_ph: obs.reshape(1,-1)})[0]
-    obs, rew, done, _ = env.step(act)
-    batch_acts.append(act)
-    ep_rews.append(rew)
-    if done:
-        batch_rets.append(sum(ep_rews))
-        batch_lens.append(len(ep_rews))
-        batch_rtgs += list(discount_cumsum(ep_rews, gamma))
-        obs, rew, done, ep_rews = env.reset(), 0, False, []
-        if len(batch_obs) > batch_size:
-            break
-
-# normalize advs trick:
-batch_advs = np.array(batch_rtgs)
-batch_advs = (batch_advs - np.mean(batch_advs))/(np.std(batch_advs) + 1e-8)
-batch_loss, _ = sess.run([loss,train_op], feed_dict={obs_ph: np.array(batch_obs),
-                                                     act_ph: np.array(batch_acts),
-                                                     adv_ph: batch_advs})
-\end{lstlisting}
-
-
-\lstset{style=mystyle3}
-
-\end{frame}
-
-\begin{frame}{Q-Learning}
-
-\begin{itemize}
-\item Core idea: learn $Q^*$ and use it to get the optimal actions
-\item Way to do it:
 \begin{itemize}
 \item Collect experience in the environment using a policy which trades off between acting randomly and acting according to current $Q_{\theta}$
-\item Interleave data collection with updates to $Q_{\theta}$ to minimize Bellman error:
+\item Interleave data collection with updates to $Q_{\theta}$ to minimize Bellman error by bootstrapping:
 %
 \begin{equation*}
-\min_{\theta} \sum_{(s,a,s',r)\in \calD} \left(Q_{\theta}(s,a) - \left(r + \gamma \max_{a'} Q_{\theta}(s',a') \right) \right)^2
+\min_{\theta} \sum_{(s,a,s',r)\in \calD} \left(Q_{\theta}(s,a) - y(s',r) \right)^2
 \end{equation*}
-...sort of! This actually won't work!
+%
+where
+\begin{equation*}
+y(s',r) = r + \gamma \max_{a'} Q_{\theta}(s',a'),
+\end{equation*}
+%
+and gradients don't propagate through $y$.
 \end{itemize}
 
-\end{itemize}
 
 \end{frame}
 
 \begin{frame}{Getting Q-Learning to Work (DQN)}
 
-Experience replay:
+\textbf{Experience replay}:
 \begin{itemize}
 \item Data distribution changes over time: as your $Q$ function gets better and you \textit{exploit} this, you visit different $(s,a,s',r)$ transitions than you did earlier
 \item Stabilize learning by keeping old transitions in a replay buffer, and taking minibatch gradient descent on mix of old and new transitions
 \end{itemize}
 \pause
-Target networks:
+\textbf{Target networks}:
 \begin{itemize}
-\item Minimizing Bellman error directly is unstable! 
-\item It's \textit{like} regression, but it's not:
-%
-\begin{equation*}
-\min_{\theta} \sum_{(s,a,s',r)\in \calD} \left(Q_{\theta}(s,a) - y(s',r) \right)^2,
-\end{equation*}
-%
-where the target $y(s',r)$ is
+\item Bootstrapping with function approximators is unstable! 
+\item It's \textit{like} regression, but it's not: targets depend on parameters $\theta$---so an update to $Q$ changes the target!
 %
 \begin{equation*}
 y(s',r) = r + \gamma \max_{a'} Q_{\theta}(s',a').
 \end{equation*}
 %
-Targets depend on parameters $\theta$---so an update to $Q$ changes the target!
 \item Stabilize it by \textit{holding the target fixed} for a while: keep a separate target network, $Q_{\theta_{targ}}$, and every $k$ steps update $\theta_{targ} \leftarrow \theta$
+\item If unstable, why do it? Because it works well! (Plus theory, later)
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}{In DQN, Action Space Matters}
+
+What we've described so far requires the computation of
+%
+\begin{equation*}
+\max_{a} Q_{\theta}(s,a),
+\end{equation*}
+%
+both for selecting actions and calculating update targets.
+
+\vspace{1em}
+\textbf{Problem}: for continuous action spaces, this is nontrivially hard! DQN therefore only applies for \textbf{discrete actions}, because we can output one Q-value per action from the network.
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm]{dqn-nature}
+\end{figure}
+
+\footnotemark[1]{Image credit: Mnih et al, 2015}
 \end{frame}
 
 \begin{frame}{DQN Pseudocode}
@@ -708,6 +649,127 @@ Targets depend on parameters $\theta$---so an update to $Q$ changes the target!
 \end{algorithmic}
 \end{algorithm}
 
+\end{frame}
+
+\begin{frame}{Caveat Emptor: DQN Can Easily Break}
+
+Even with many additional tricks, DQN-style algorithms still occasionally diverge (Q-values go to unrealistically large or negative values and control performance tanks). Why?
+
+\vspace{2em}
+\textbf{To answer that question, we have to dive into some math.}
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm]{q_divergence}
+\end{figure}
+
+\footnotemark[1]{van Hesselt et al, 2018: ``Deep Reinforcement Learning and the Deadly Triad"}
+
+\end{frame}
+
+\begin{frame}{Mathematical Foundations of Q-Learning}
+
+Operator view of Bellman equation: define \textbf{optimal Bellman operator} $\calT^* : \calQ \to \calQ$ to have values
+%
+\begin{equation*}
+[\calT^*Q](s,a) = \underE{s' \sim P}{R(s,a,s') + \gamma \max_{a'} Q(s',a')}.
+\end{equation*}
+
+\vspace{2em}
+Optimal Q-function is fixed-point of $\calT^*$:
+%
+\begin{equation*}
+Q^* = \calT^* Q^*
+\end{equation*}
+
+$\calT^*$ has a special property: it is a \textbf{contraction} on $\calQ$ in the sup norm (max absolute value over all states and actions).
+
+\end{frame}
+
+\begin{frame}{Foundations of Q-Learning: Contraction Maps}
+
+A function $f: X \to X$ on a normed vector space $(X, \|\cdot\|)$ is said to be a \textbf{contraction} with modulus $\beta$ if
+%
+\begin{equation*}
+\forall x, y \in X, \;\;\; \|f(x) - f(y)\| \leq \beta \|x - y\|.
+\end{equation*}
+
+\vspace{2em}
+Why do we care about contractions? Because they have \textbf{unique fixed-points} and the fixed points can be obtained by repeated application of the operator!
+
+\vspace{2em}
+To see this, consider the sequence $\{x_0, x_1, ...\}$ with $x_{i+1} = f(x_i)$. Observe that
+%
+\begin{align*}
+\|x_{i+1} - x_i\| &= \|f(x_i) - f(x_{i-1})\|\\
+&\leq \beta \|x_{i} - x_{i-1}\| \\
+&\leq \beta^i \|x_1 - x_0\|
+\end{align*}
+
+The distance between iterates shrinks by a factor of $\beta$ each iteration!
+
+\end{frame}
+
+\begin{frame}{Foundations of Q-Learning: Value Iteration}
+
+$\calT^*$ is a contraction on $\calQ$ with modulus $\gamma$, so we should be able to obtain $Q^*$ in the limit of the sequence:
+%
+\begin{equation*}
+Q_{i+1} = \calT^* Q_i.
+\end{equation*}
+
+This approach is \textbf{value iteration}, a classic RL algorithm. 
+
+\vspace{2em}
+
+\textbf{Problems}: When the state/action space is large and we use function approximation, 
+%
+\begin{itemize}
+\item We can't compute all of $\calT^*Q_i$
+\item $\calT^* Q_i$ may not be representable in our function class $\calQ_{\theta}$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Foundations of Q-Learning: Approximating Value Iteration}
+
+So what we do is push $Q_{\theta}$ towards $\calT^* Q_{\theta}$ for the state-action pairs where we can estimate it:
+%
+\begin{equation*}
+\theta \leftarrow \theta + \alpha \underbrace{\left(\hat{\calT}^*Q_{\theta}(s,a) - Q_{\theta}(s,a)\right)}_{r + \gamma \max_{a'} Q_{\theta}(s',a') - Q_{\theta}(s,a)} \nabla_{\theta} Q_{\theta}(s,a)
+\end{equation*}
+%
+which is deep Q-learning. This may or may not preserve the contraction: when it doesn't, divergence happens!
+
+\vspace{2em}
+
+Important to realize: \textbf{this means deep Q-learning isn't minimizing a real loss function}.
+
+\end{frame}
+
+\begin{frame}{Model-Based RL}
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{rl_algorithms_modelbased_only}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Model-Based RL}
+
+
+\begin{columns}
+\begin{column}{0.33\textwidth}
+\includegraphics[width=0.9\textwidth]{rl_loop}
+\end{column}
+\begin{column}{0.67\textwidth}
+\textbf{Model-Based RL}
+\begin{itemize}
+\item Can make use of an environment model (a simulator) anywhere in the loop to improve!
+\item Downside: model not usually available
+\item Models can be very hard to learn, so model-based is not yet as reliable as model-free
+\end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
 \end{document}

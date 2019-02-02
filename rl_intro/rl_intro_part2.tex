@@ -156,6 +156,20 @@ If you have infinite simulator data and well-defined rewards, you can make subst
 }
 \end{frame}
 
+\begin{frame}{Spotlight on AlphaGo}
+
+\twocolumns{0.6}{0.4}{
+\includegraphics[width=\textwidth]{p2-alphago}
+}{
+Hard to overstate what an unbelievable accomplishment this was
+
+\vspace{2em}
+
+Previously: Go was considered unassailable stronghold for human experts, AI 10+ years away
+}
+
+\end{frame}
+
 \begin{frame}{What RL Can Currently Do: RL in the Real World}
 
 \twocolumns{0.5}{0.5}{
@@ -227,13 +241,25 @@ Robust control of a legged robot (took 2 hours to learn)
 
 \begin{frame}{Anymal}
 
-Hwangbo et al. used real data to learn a better simulator, and then used lots of simulator data to train complex locomotion and recovery policies for the Anymal robot:
+Hwangbo et al. used real data to learn a better simulator, and then used lots of simulator data to train complex locomotion and recovery policies with TRPO for the Anymal robot:
 
 \begin{center}
 \movie[width=0.8\textwidth, autostart, loop]{\includegraphics[width=0.8\textwidth]{p2-anymal}}{images/p2-anymal.mp4}
 \end{center}
 
 \footnotemark[1]{Hwangbo et al, 2018: ``Learning agile and dynamic motor skills for legged robots"}
+\end{frame}
+
+\begin{frame}{Learning Dexterity}
+
+OpenAI et al. trained policies with PPO to dextrously manipulate a complex hand robot, using sim2real by domain randomization:
+
+\begin{center}
+\movie[width=0.8\textwidth, autostart, loop]{\includegraphics[width=0.8\textwidth]{p2-dexterity}}{images/p2-dexterity.mov}
+\end{center}
+
+\footnotemark[1]{OpenAI et al, 2018: ``Learning Dexterous In-Hand Manipulation"}
+
 \end{frame}
 
 \section{2.2: What are the challenges in modern RL?}

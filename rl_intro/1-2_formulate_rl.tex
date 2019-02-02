@@ -167,6 +167,20 @@ where $\gamma \in (0,1)$. This makes rewards less valuable if they are further i
 
 \end{frame}
 
+\begin{frame}{Reward-to-Go}
+
+A closely-related quantity is \textbf{reward-to-go}, which is ``return starting from a state or timestep":
+%
+\begin{equation*}
+R_t = \sum_{t'=t}^T r_{t'}
+\end{equation*}
+%
+or
+\begin{equation*}
+R_t = \sum_{t'=t}^{\infty} \gamma^{t'-t} r_{t'}
+\end{equation*}
+\end{frame}
+
 \begin{frame}{The Reinforcement Learning Problem}
 
 In RL we want a policy which maximizes expected return. Thus the performance measure is
