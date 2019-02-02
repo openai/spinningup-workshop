@@ -238,9 +238,11 @@ What we'll cover:
 \begin{itemize}
 \item Direct gradient ascent on $J(\pi_{\theta})$ (VPG)
 \item Various formulations of $\nabla_{\theta} J(\pi_{\theta})$
-\item Some material about natural policy gradients
+%\item Some material about natural policy gradients
 \end{itemize}
 
+\vspace{1em}
+But this content is also central to other policy optimization algorithms (TRPO and PPO), and will prepare you to self-study them.
 \end{frame}
 
 \begin{frame}{The Policy Gradient}
@@ -492,33 +494,32 @@ Generalized Advantage Estimates\footnote{Schulman et al, 2017: ``High-Dimensiona
     \end{algorithm}
 \end{frame}
 
-\begin{frame}{Trust Region Policy Optimization: Pseudocode}
-
-\begin{algorithm}[H]
-   \caption{Trust Region Policy Optimization}
-   \label{alg1}
-\begin{algorithmic}
-     \STATE Input: initial policy parameters $\theta_0$
-	 \FOR{$k = 0,1,2,...$} 
-	 \STATE Collect set of trajectories $\calD_k$ on policy $\pi_k = \pi(\theta_k)$
-	 \STATE Estimate advantages $\hat{A}^{\pi_k}_t$ using any advantage estimation algorithm
-	 \STATE Form sample estimates for
-	 \begin{itemize}
-	 \item policy gradient $\hat{g}_k$ (using advantage estimates)
-	 \item and KL-divergence Hessian-vector product function $f(v) = \hat{H}_k v$
-	 \end{itemize}
-	 \STATE Use CG with $n_{cg}$ iterations to obtain $x_k \approx \hat{H}^{-1}_k \hat{g}_k$
-	 \STATE Estimate proposed step $\Delta_k \approx \sqrt{\frac{2\delta}{x_k^T \hat{H}_k x_k}} x_k$
-	 \STATE Perform backtracking line search with exponential decay to obtain final update
-	 \begin{equation*}
-	 \theta_{k+1} = \theta_k + \alpha^j \Delta_k
-	 \end{equation*}
-
-	\ENDFOR
-\end{algorithmic}
-\end{algorithm}
-
-\end{frame}
+%\begin{frame}{Natural Policy Gradient: Pseudocode}
+%
+%\begin{algorithm}[H]
+%   \caption{Truncated Natural Policy Gradient}
+%   \label{alg1}
+%\begin{algorithmic}
+%     \STATE Input: initial policy parameters $\theta_0$, initial value parameters $\phi_0$
+%	 \FOR{$k = 0,1,2,...$} 
+%	 \STATE Collect set of trajectories $\calD_k$ on policy $\pi_k = \pi(\theta_k)$
+%	 \STATE Estimate advantages $\hat{A}^{\pi_k}_t$ using any advantage estimation algorithm (assume value learning is a subroutine here)
+%	 \STATE Form sample estimates for
+%	 \begin{itemize}
+%	 \item policy gradient $\hat{g}_k$ (using advantage estimates)
+%	 \item and KL-divergence Hessian-vector product function $f(v) = \hat{H}_k v$
+%	 \end{itemize}
+%	 \STATE Use CG with $n_{cg}$ iterations to obtain $x_k \approx \hat{H}^{-1}_k \hat{g}_k$
+%	 \STATE Compute policy update
+%	 \begin{equation*}
+%	 \theta_{k+1} = \theta_k + \sqrt{\frac{2\delta}{x_k^T \hat{H}_k x_k}} x_k
+%	 \end{equation*}
+%
+%	\ENDFOR
+%\end{algorithmic}
+%\end{algorithm}
+%
+%\end{frame}
 
 \begin{frame}{Model-Free RL: Q-Learning}
 \begin{figure}
@@ -743,7 +744,7 @@ which is deep Q-learning. This may or may not preserve the contraction: when it 
 
 \vspace{2em}
 
-Important to realize: \textbf{this means deep Q-learning isn't minimizing a real loss function}.
+Important to realize: \textbf{deep Q-learning isn't minimizing a loss function---out of ordinary for deep learning!}
 
 \end{frame}
 
@@ -772,4 +773,57 @@ Important to realize: \textbf{this means deep Q-learning isn't minimizing a real
 \end{columns}
 \end{frame}
 
+\begin{frame}{Model-Based RL: A Brief Overview}
+
+\textbf{Planning or Expert Iteration}:
+\begin{itemize}
+\item Use the model to look ahead from current state and evaluate multiple possible futures. Pick the action that leads to the best one (according to current $V^{\pi}$).
+\item In the case of Expert Iteration, train the policy to select that action more often.
+\item Can apply lookahead during either or both of \textbf{run policy} and \textbf{improve policy} step.
+\end{itemize}
+
+\vspace{2em}
+Case study: AlphaZero
+%
+\begin{equation*}
+(p,v) = f_{\theta}(s), \;\;\;\;\; \calL(\theta) = (z - v)^2 - \pi^T \log p + c \|\theta\|_2^2
+\end{equation*}
+
+\begin{itemize}
+\item Run policy: use MCTS with $f_{\theta}$ to generate and act with policy $\pi$
+\item Policy improvement: Target policy $\pi$ is computed by MCTS, $p$ is moved towards $\pi$
+\item Policy evaluation: Regress value output $v$ towards true win-or-loss var $z$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Model-Based RL: A Brief Overview}
+
+\textbf{Using Model for Policy Evaluation}:
+\begin{itemize}
+\item Fully or partially simulate rollouts from true start states using the model
+\item Use rollouts either for computing advantages (as in policy optimization) or Q-learning targets
+\item Examples: ME-TRPO, MBVE
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Model-Based RL: A Brief Overview}
+
+\textbf{Using Model as Side Information for Policy}:
+\begin{itemize}
+\item Model directly embedded into a policy architecture as a module it can query
+\item Policy is trained by model-free methods, but conditions on model-based info
+\item Examples: I2A
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{i2a}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{End of Part 1}
+
+Thank you! Please hold questions until the End of Part 2.
+\end{frame}
 \end{document}

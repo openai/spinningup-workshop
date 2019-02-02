@@ -264,6 +264,69 @@ OpenAI et al. trained policies with PPO to dextrously manipulate a complex hand 
 
 \section{2.2: What are the challenges in modern RL?}
 
+\begin{frame}{Some grand challenges for RL}
 
+Let's talk about where RL fails, what we need that we aren't getting, and what research is happening.
+
+\begin{itemize}
+\item \textbf{Sample efficiency}: Modern deep RL algorithms are very inefficient with data, requiring in some cases 100x or more experience than a human to achieve good performance. How can we make them faster?
+\pause
+\item \textbf{Exploration}: Modern RL is terrible at environments where rewards are very rare---how can we get agents to try out new things?
+\pause
+\item \textbf{Generalization}: Policies trained for one task are brittle and cannot be used outside of training environment: how can we make them generalize?
+\pause
+\item \textbf{Safety}: How can we make sure that agents trained by deep RL behave in ways consistent with human preferences?
+\end{itemize}
+
+\end{frame}
+
+\section{2.2.1: Research on Improving Sample Efficiency}
+
+\begin{frame}{Combining Model-Free Improvements}
+\twocolumns{0.5}{0.5}{
+\textbf{Rainbow DQN}: combines...
+\begin{itemize}
+\item Dueling architecture
+\item Double Q-Learning
+\item Prioritized experience replay
+\item N-step Q-Learning
+\item Distributional Q-Learning
+\item Parameter-space noise
+\end{itemize}
+}{
+\includegraphics[width=\textwidth]{p2-rainbow}
+}
+\footnotemark[1]{Hessel et al, 2017: ``Rainbow: Combining Improvements in Deep Reinforcement Learning"}
+
+\end{frame}
+
+\begin{frame}{Accelerating Feature Learning with Unsupervised Learning}
+
+\textbf{UNREAL} uses various unsupervised auxilliary tasks to speed up learning:
+
+\twocolumns{0.5}{0.5}{
+\begin{center}
+\includegraphics[width=0.9\textwidth]{p2-unreal2}
+\end{center}
+}{
+\begin{center}
+\includegraphics[width=0.9\textwidth]{p2-unreal-labyrinth}
+\end{center}
+}
+\vspace{1em}
+
+\footnotemark[1]{Jaderberg et al, 2016: ``Reinforcement Learning with Unsupervised Auxiliary Tasks"}
+
+
+%
+%\begin{center}
+%\movie[width=0.8\textwidth, autostart, loop]{\includegraphics[width=0.8\textwidth]{p2-unreal}}{images/p2-unreal.mp4}
+%\end{center}
+
+\end{frame}
+
+\begin{frame}{Combining with Memory Mechanisms}
+
+\end{frame}
 
 \end{document}
