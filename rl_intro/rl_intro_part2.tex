@@ -1,0 +1,243 @@
+\documentclass[9pt]{beamer}
+\usepackage{beamerthemesplit}
+%\usepackage{times}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{thmtools,thm-restate}
+\usepackage[font=small]{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{animate}
+\usepackage{media9}
+\usepackage{multimedia}
+\usepackage{hyperref}
+\usepackage{cancel}
+
+\usetheme{Madrid}
+
+\graphicspath{{./images/}}
+
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+
+\newcommand{\underE}[2]{\underset{\begin{subarray}{c}#1 \end{subarray}}{\E}\left[ #2 \right]}
+
+
+\newcommand\Fontvi{\fontsize{6}{7.2}\selectfont}
+\renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
+
+\newcommand{\twocolumns}[4]{
+\begin{columns}
+\begin{column}{#1\textwidth}
+    #3
+\end{column}
+\begin{column}{#2\textwidth}
+	#4
+\end{column}
+\end{columns}
+}
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{courier}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    %numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstdefinestyle{mystyle2}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\tiny\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    %numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstdefinestyle{mystyle3}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\scriptsize\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    %numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle3}
+
+
+\begin{document}
+\input{exercises_def.tex}
+
+\title{Introduction to Deep RL, Part 2}
+\author{Joshua Achiam}
+\institute{OpenAI}
+\titlegraphic{\includegraphics[height=2cm]{spinning-up-logo2}}
+%\date{March 3, 2018}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+\section{2.1: What is RL currently achieving?}
+
+\begin{frame}{What RL Can Currently Do: RL in Simulation}
+
+\twocolumns{0.5}{0.5}{
+If you have infinite simulator data and well-defined rewards, you can make substantial progress on extremely hard problems!
+\begin{itemize}
+\item Atari
+\item Simulated robotics
+\item Go (Deepmind's AlphaZero)
+\item Dota (OpenAI Five)
+\item Starcraft (Deepmind's AlphaStar)
+\end{itemize}
+}{
+\includegraphics[width=\textwidth]{p2-five}
+
+\includegraphics[width=\textwidth]{p2-alphastar}
+}
+\end{frame}
+
+\begin{frame}{What RL Can Currently Do: RL in the Real World}
+
+\twocolumns{0.5}{0.5}{
+RL is beginning to see profitable real-world applications!
+\begin{itemize}
+\item Facebook uses RL (DQN) for push notifications (Horizon)
+\item DeepMind integrated RL into data center cooling 
+\item Several promising early efforts at applying RL for robotics
+\end{itemize}
+}{
+
+\includegraphics[width=\textwidth]{p2-horizon}
+
+
+\includegraphics[width=\textwidth]{p2-datacenter}
+}
+
+\end{frame}
+
+\section{2.1.1: Spotlight on RL for Real-World Robotics}
+
+
+\begin{frame}{Tasks that can't easily be simulated}
+
+Zhu et al. trained low-cost robots from scratch in the real world on hard-to-simulate tasks using natural policy gradient. (Note: observation space here is hand state and valve state)
+
+\begin{center}
+\movie[width=0.8\textwidth, autostart, loop]{\includegraphics[width=0.8\textwidth]{p2-foamscrew}}{images/p2-foamscrew.mp4}
+\end{center}
+
+
+\footnotemark[1]{Zhu et al, 2018: ``Dexterous Manipulation with Deep Reinforcement Learning: Efficient, General, and Low-Cost"}
+
+\end{frame}
+
+\begin{frame}{Robots that are hard to control conventionally}
+
+Zhang et al. trained a tensegrity robot with deep RL in simulation and demonstrated transfer to the real world
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{p2-tensegrity}
+\end{figure}
+
+
+\footnotemark[1]{Zhang et al, 2016: ``Deep Reinforcement Learning for Tensegrity Robot Locomotion"}
+\end{frame}
+
+\begin{frame}{Soft Actor-Critic}
+
+Haarnoja et al. trained robots in the real world with Soft Actor-Critic, and demonstrated efficient and robust control on hard domains
+
+\twocolumns{0.5}{0.5}{
+\begin{center}
+\movie[width=0.9\textwidth, autostart, loop]{\includegraphics[width=0.9\textwidth]{p2-sac-valve}}{images/p2-sac-valve.mp4}
+\end{center}
+Manipulation from visual input, agent sees lower-right (took 20 hours to learn)
+}{
+\begin{center}
+\movie[width=\textwidth, autostart, loop]{\includegraphics[width=\textwidth]{p2-sac-minitaur}}{images/p2-sac-minitaur.mp4}
+\end{center}
+Robust control of a legged robot (took 2 hours to learn)
+}
+
+\vspace{1em}
+
+\footnotemark[1]{Haarnoja et al, 2018: ``Soft Actor-Critic Algorithms and Applications"}
+
+\end{frame}
+
+\begin{frame}{Anymal}
+
+Hwangbo et al. used real data to learn a better simulator, and then used lots of simulator data to train complex locomotion and recovery policies for the Anymal robot:
+
+\begin{center}
+\movie[width=0.8\textwidth, autostart, loop]{\includegraphics[width=0.8\textwidth]{p2-anymal}}{images/p2-anymal.mp4}
+\end{center}
+
+\footnotemark[1]{Hwangbo et al, 2018: ``Learning agile and dynamic motor skills for legged robots"}
+\end{frame}
+
+\section{2.2: What are the challenges in modern RL?}
+
+
+
+\end{document}
