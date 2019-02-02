@@ -486,7 +486,7 @@ Key idea: unboundedly complex environments challenge agents to develop robust, g
 Competitive multi-agent games create natural curricula that inspire general behaviors (because any fault will get exploited by the opponent). In self-play, agents play games against old versions of themselves to improve:\footnote{Bansal et al, 2017: ``Emergent Complexity via Multi-Agent Competition"}
 
 \begin{center}
-\movie[width=0.5\textwidth, autostart, loop]{\includegraphics[width=0.5\textwidth]{p2-selfplay}}{images/p2-selfplay.mov}
+\movie[width=0.5\textwidth, autostart, loop]{\includegraphics[width=0.5\textwidth]{p2-selfplay}}{images/p2-selfplay.mp4}
 \end{center}
 
 
@@ -495,6 +495,10 @@ Competitive multi-agent games create natural curricula that inspire general beha
 \begin{frame}{Generalize by Meta-Learning}
 
 \textbf{Model Agnostic Meta-Learning (MAML)}\footnote{Finn et al, 2017: ``Model-Agnostic Meta-Learning for Fast Adaptation of Deep Networks"} trains a model with an objective describing its adaptability: the model at optimum should only need a few gradient steps to quickly learn a new task.
+
+\begin{center}
+\includegraphics[width=4cm]{p2-maml}
+\end{center}
 
 \end{frame}
 
@@ -582,6 +586,18 @@ Whether you intend to be a practitioner or a researcher:
 
 \end{frame}
 
+\begin{frame}{If you want to hack with RL tools that are out there...}
+
+\begin{itemize}
+\item OpenAI Gym, Baselines, and Spinning Up
+\item Many other algorithm libraries: rllab, rllib, rlkit, Intel's Coach, softlearning, ChainerRL, vel, Stable-Baselines, and more
+\item Very few primitives libraries: TRFL
+\item Note: there's not a ``Tensorflow for RL" yet: if you want it, you have to build it yourself
+\item RL currently ships as solutions as opposed to modular components
+\end{itemize}
+
+\end{frame}
+
 \begin{frame}{If you want to do research}
 
 \twocolumns{0.5}{0.5}{
@@ -599,4 +615,10 @@ Whether you intend to be a practitioner or a researcher:
 \end{center}
 }
 \end{frame}
+
+\begin{frame}{End of Part 2}
+
+Thank you all! Questions?
+\end{frame}
+
 \end{document}
