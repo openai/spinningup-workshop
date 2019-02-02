@@ -318,13 +318,14 @@ y = build_logits_network(x)
 y_ = tf.placeholder(tf.float32, [None, 10])
 
 cross_entropy = tf.reduce_mean(
-  tf.nn.softmax_cross_entropy_with_logits(
+  tf.nn.softmax_cross_entropy_with_logits_v2(
     labels=y_, 
     logits=y
     )
   )
 \end{lstlisting}
 \item See \verb|tf.losses| for more (\verb|huber_loss|, \verb|hinge_loss|, etc.)
+\item Watch out for \verb|softmax_cross_entropy| vs \verb|sparse_softmax_cross_entropy|
 \end{itemize}
 \end{frame}
 
@@ -420,7 +421,7 @@ def main(_):
 \item \verb|tf.contrib.layers.conv2d|
 \end{itemize}
 \item Activation functions: \verb|tf.nn.{relu, sigmoid, tanh, elu}|
-\item Neural Network tricks: \verb|tf.layers.dropout|
+\item Neural Network tricks: \verb|tf.layers.batch_normalization|, \verb|tf.layers.dropout|
 \item Tensor utilities: \verb|tf.reshape|, \verb|tf.contrib.layers.flatten|, \verb|tf.concat|, \verb|tf.reduce_sum|, \verb|tf.reduce_mean|
 \end{itemize}
 
@@ -476,7 +477,8 @@ with tf.variable_scope('conv2'):
 
 \end{lstlisting}
 \item Scopes can nest
-\item Scope names become part of directory structure for variable names; makes possible to access them through more arcane methods
+\item Scope names become part of directory structure for variable names
+\item Proper scoping helps when debugging
 \end{itemize}
 \end{frame}
 
@@ -486,7 +488,6 @@ with tf.variable_scope('conv2'):
 \lstset{style=mystyle2}
 \begin{lstlisting}[language=python]
 In [1]: import tensorflow as tf
-
 In [2]: x = tf.placeholder(shape=(None,10),dtype=tf.float32)
    ...: y = tf.placeholder(shape=(None,10),dtype=tf.float32)
    ...: with tf.variable_scope('test'):
@@ -494,20 +495,19 @@ In [2]: x = tf.placeholder(shape=(None,10),dtype=tf.float32)
    ...: with tf.variable_scope('test',reuse=True):
    ...:     o2 = tf.layers.dense(x, 10)
    ...:     
-
 In [3]: o2
 Out[3]: <tf.Tensor 'test_1/dense/BiasAdd:0' shape=(?, 10) dtype=float32>
-
 In [4]: o1
 Out[4]: <tf.Tensor 'test/dense/BiasAdd:0' shape=(?, 10) dtype=float32>
-
 In [5]: tf.global_variables()
 Out[5]: 
 [<tf.Variable 'test/dense/kernel:0' shape=(10, 10) dtype=float32_ref>,
  <tf.Variable 'test/dense/bias:0' shape=(10,) dtype=float32_ref>]
 \end{lstlisting}
 \lstset{style=mystyle}
-o1 and o2 are different dense operations, there is only one set of variables!
+\item o1 and o2 are different tensors, but there is only one set of variables!
+\item With \verb|reuse=tf.AUTO_REUSE|, variable name will determine reuse
+\item Unintended variable reuse is a common source of bugs
 \end{itemize}
 \end{frame}
 
@@ -637,6 +637,7 @@ Out[4]:
  <tf.Variable 'test/dense/bias:0' shape=(20,) dtype=float32_ref>]
 \end{lstlisting}
 \item Good scoping makes it easier to find problem areas
+\item Inject print ops into your graph (see \verb|tf.Print|, \verb|tf.print|)
 \end{itemize}
 
 
@@ -676,15 +677,13 @@ For some performance comparisons:
 
 \end{frame}
 
-\begin{frame}{Alternate APIs/Wrappers for Tensorflow}
+\begin{frame}{Additional APIs/Wrappers for Tensorflow}
 
 \begin{itemize}
 \item tf-contrib (active development code in Tensorflow available to user, usually stabilizes into main code eventually)
 \item Keras (officially supported by Google)
-\item TF-Slim (also supported by Go---wait a second... how many APIs did Google make for this thing?)
-\item Sonnet (supported by Deepmind! which is owned by Google)
+\item Sonnet (supported by Deepmind! which is owned by Go---wait a second... how many APIs did Google make for this thing?)
 \item TFLearn
-\item skflow
 \end{itemize}
 
 Lots of fragmentation, but things seem to have stabilized around core Tensorflow / Keras. Sonnet may be worth watching, though, because of DeepMind. 
