@@ -327,6 +327,134 @@ Let's talk about where RL fails, what we need that we aren't getting, and what r
 
 \begin{frame}{Combining with Memory Mechanisms}
 
+\textbf{MERLIN} combines unsupervised learning and attention-based memory to improve over baseline architectures:
+
+\twocolumns{0.5}{0.5}{
+\begin{center}
+\includegraphics[width=0.9\textwidth]{p2-merlin1}
+\end{center}
+}{
+\begin{center}
+\includegraphics[width=0.9\textwidth]{p2-merlin2}
+\end{center}
+}
+
+Note: this avenue may not help on arbitrary problems, but seems likely to help on sophisticated partially-observed ones
+\vspace{1em}
+
+\footnotemark[1]{Wayne et al, 2018: ``Unsupervised Predictive Memory in a Goal-Directed Agent"}
+
 \end{frame}
 
+\begin{frame}{Model-Based RL}
+
+Techniques like \textbf{World Models}, that allow an agent to learn from simulated experience, are another way to bring down the needed number of real samples:
+
+\begin{center}
+\movie[width=0.8\textwidth, autostart, loop]{\includegraphics[width=0.8\textwidth]{world_models}}{images/world_models.mp4}
+\end{center}
+
+\footnotemark[1]{Ha and Schmidhuber, 2018: ``World Models"}
+
+\end{frame}
+
+
+\section{2.2.2: Research on Improving Exploration}
+
+\begin{frame}{AKA, the Quest to Solve Montezuma's Revenge}
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{p2-montezuma}
+\end{center}
+
+\begin{itemize}
+\item Famously hard Atari game
+\item Most RL algorithms do terribly
+\item Very sparse rewards, many actions lead to death
+\item But humans can do just fine!
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Intrinsic Motivation}
+
+Various \textbf{intrinsic motivation} schemes exist, which work by adding a non-environment-dependent reward:
+%
+\begin{equation*}
+R(s,a,s') \to R(s,a,s') + \eta R_{int}(s,a,s')
+\end{equation*}
+
+Usually, intrinsic reward prefers \textbf{new experiences}. Examples:
+%
+\begin{itemize}
+\item Pseudocount-based methods\footnote{Bellemare et al, 2016: ``Unifying Count-Based Exploration and Intrinsic Motivation"}: approximates number of state visitations with density model, rewards are:
+%
+\begin{equation*}
+R_{int}(s,a,s') \propto \frac{1}{\sqrt{N(s)}}
+\end{equation*}
+\item Information gain\footnote{Houthooft et al, 2016: ``Variational Information Maximizing Exploration"}: approximates change in info state about environment model based on new experience
+%
+\begin{equation*}
+R_{int}(s,a,s') \approx D_{KL}(P(\calE|\calD_t,s_{t+1})||P(\calE|\calD_t))
+\end{equation*}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Random Network Distillation}
+
+\textbf{Random Network Distillation}\footnote{Burda et al, 2018: ``Exploration by Random Network Distillation"}: A new and appealingly simple form of intrinsic motivation:
+%
+\begin{equation*}
+R_{int}(s) = \|f_{\phi}(s) - f_{\xi}(s)\|,
+\end{equation*}
+%
+where $f_{\phi}$ is a random neural network (the target) and $f_{\xi}$ is trained to match $f_{\phi}$
+
+\begin{itemize}
+\item Exploits generalization properties of networks: $f_{\phi}$ matches $f_{\xi}$ on old states but not new states!
+\end{itemize}
+
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{p2-rnd-atari}
+\end{center}
+\end{frame}
+
+\begin{frame}{Go-Explore}
+
+Ecoffet et al, 2018 identify a problem with intrinsic motivation that they call \textbf{detachment}:
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{p2-detach}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Go-Explore}
+
+They rectify detachment with \textbf{Go-Explore}\footnote{Ecoffet et al, 2018: ``Go-Explore: a New Approach for Hard-Exploration Problems"} algorithm:
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{p2-go-explore}
+
+\includegraphics[width=0.4\textwidth]{p2-go-explore2}
+\end{center}
+
+\end{frame}
+
+
+\section{2.3: Spinning Up in Deep RL}
+
+\begin{frame}{Getting started}
+
+If you haven't already:
+\begin{itemize}
+\item Brush up on math! Be familiar with vectors, matrices, gradients, gradient descent, random variables, expectations, variance, and a few other things.
+\item Brush up on deep learning! \textbf{As much as you can get.}
+\item Become familiar with TF or PyTorch! \textbf{You need to tinker to learn.}
+\item Stay fresh on RL basics! \textbf{Fundamentals go a long way.}
+\end{itemize}
+
+\end{frame}
 \end{document}
