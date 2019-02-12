@@ -4,13 +4,11 @@
 
 9-10am: [Intro to RL, Part 1](https://github.com/openai/spinningup-workshop/blob/master/rl_intro/rl_intro.pdf), presented by Joshua Achiam
 
-10:15-11am: [Intro to RL, Part 2](https://github.com/openai/spinningup-workshop/blob/master/rl_intro/rl_intro.pdf), presented by Joshua Achiam[^1]
+10:15-11am: [Intro to RL, Part 2](https://github.com/openai/spinningup-workshop/blob/master/rl_intro/rl_intro.pdf), presented by Joshua Achiam
 
-11-11:30am: Learning Dexterity, presented by Matthias Plappert
+11-11:30am: [Learning Dexterity](https://github.com/openai/spinningup-workshop/tree/master/research_talks), presented by Matthias Plappert
 
 11:30am-12pm: Intro to AI Safety, presented by Dario Amodei
-
-[^1]: This talk was originally meant to cover the material in [this presentation](https://github.com/openai/spinningup-workshop/blob/master/rl_intro/rl_intro_part2.pdf), but because of time we only wound up going through the first deck of slides.
 
 ## Breakout sessions:
 
